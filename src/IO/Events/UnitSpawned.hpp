@@ -11,8 +11,8 @@ namespace sw::io
 
 		uint32_t unitId{};
 		std::string unitType{};
-		uint32_t x{};
-		uint32_t y{};
+		int32_t x{};
+		int32_t y{};
 
 		template <typename Visitor>
 		void visit(Visitor& visitor)

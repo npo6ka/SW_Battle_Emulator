@@ -12,7 +12,7 @@ namespace sw::io
 		uint32_t unitId{};
 		uint32_t x{};
 		uint32_t y{};
-		uint32_t hp{};
+		int32_t hp{};
 		uint32_t strength{};
 
 		template <typename Visitor>

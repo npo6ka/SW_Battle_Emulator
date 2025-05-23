@@ -1,12 +1,14 @@
 #pragma once
 
 #include "details/PrintFieldVisitor.hpp"
+
 #include <iostream>
 #include <typeindex>
 #include <unordered_map>
 
 namespace sw
 {
+
 	class EventLog
 	{
 	public:
@@ -19,4 +21,7 @@ namespace sw
 			std::cout << std::endl;
 		}
 	};
+
+	inline EventLog eventLog;  // глобальный лог для всех событий игры
+
 }

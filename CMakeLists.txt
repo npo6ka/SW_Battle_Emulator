@@ -2,8 +2,22 @@ cmake_minimum_required(VERSION 3.27)
 project(sw_battle_test)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE SOURCES src/*.cpp src/*.hpp)
-add_executable(sw_battle_test ${SOURCES})
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-target_include_directories(sw_battle_test PUBLIC src/)
+# Add source files
+file(GLOB_RECURSE SOURCES 
+    "src/*.cpp"
+    "src/*.hpp"
+)
+
+# Create executable
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Include directories
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC 
+        ${CMAKE_SOURCE_DIR}/src
+)

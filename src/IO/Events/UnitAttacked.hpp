@@ -11,8 +11,8 @@ namespace sw::io
 
 		uint32_t attackerUnitId{};
 		uint32_t targetUnitId{};
-		uint32_t damage{};
-		uint32_t targetHp{};
+		int32_t damage{};
+		int32_t targetHp{};
 
 		template <typename Visitor>
 		void visit(Visitor& visitor)

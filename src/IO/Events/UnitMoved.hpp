@@ -10,8 +10,8 @@ namespace sw::io
 		constexpr static const char* Name = "UNIT_MOVED";
 
 		uint32_t unitId{};
-		uint32_t x{};
-		uint32_t y{};
+		int32_t x{};
+		int32_t y{};
 
 		template <typename Visitor>
 		void visit(Visitor& visitor)
