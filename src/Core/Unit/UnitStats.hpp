@@ -23,25 +23,6 @@ namespace sw::game
 		}
 
 		template <typename T>
-		T& get()
-		{
-			using BaseType = std::remove_const_t<T>;
-			auto it = stats_.find(std::type_index(typeid(BaseType)));
-			if (it == stats_.end())
-			{
-				throw std::runtime_error("Stat of type " + std::string(typeid(BaseType).name()) + " does not exist");
-			}
-			try
-			{
-				return std::any_cast<BaseType&>(it->second);
-			}
-			catch (const std::bad_any_cast&)
-			{
-				throw std::runtime_error("Invalid type cast for stat type: " + std::string(typeid(BaseType).name()));
-			}
-		}
-
-		template <typename T>
 		const T& get() const
 		{
 			using BaseType = std::remove_const_t<T>;
