@@ -106,9 +106,9 @@ namespace sw::game
 
 			for (const auto& [opponentId, opponent] : units)
 			{
-				if (opponent != unit && opponent->isAlive() && opponent->getDistance(pos) < distanceToTarget)
+				if (opponent != unit && opponent->isAlive() && opponent->getDistance(*unit) < distanceToTarget)
 				{
-					distanceToTarget = opponent->getDistance(pos);
+					distanceToTarget = opponent->getDistance(*unit);
 					targetUnit = opponent;
 				}
 			}
@@ -142,7 +142,7 @@ namespace sw::game
 				while (!unitsInRange.empty())
 				{  // ищем юнита которого можем проатаковать
 					auto opponent = unitsInRange.back();
-					int distance = opponent->getDistance(unit->getPosition());
+					int distance = opponent->getDistance(*unit);
 					if (opponent->canBeAttacked(damage, distance))
 					{
 						opponent->attack(unit, damage);
@@ -165,7 +165,7 @@ namespace sw::game
 		{
 			const Position& pos = unit->getPosition();
 			properties::Strength strength = unit->getStats().get<properties::Strength>();
-			auto adjacentUnits = map->getUnitsInRange(pos, 1, 1);
+			auto adjacentUnits = map->getUnitsInRange(*unit, 1, 1);
 
 			return dealDamage(unit, adjacentUnits, strength.value);
 		}
@@ -180,7 +180,7 @@ namespace sw::game
 			properties::Agility agility = unit->getStats().get<properties::Agility>();
 			properties::Range range = unit->getStats().get<properties::Range>();
 
-			auto unitsInRange = map->getUnitsInRange(pos, 2, range.value + 1);
+			auto unitsInRange = map->getUnitsInRange(*unit, 2, range.value + 1);
 
 			return dealDamage(unit, unitsInRange, agility.value);
 		}

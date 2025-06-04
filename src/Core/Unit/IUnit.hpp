@@ -73,8 +73,9 @@ namespace sw::game
 			return true;
 		}
 
-		virtual int getDistance(Position pos) const
+		virtual int getDistance(const IUnit& unit) const
 		{
+			auto pos = unit.getPosition();
 			return std::max(std::abs(pos.x - position_.x), std::abs(pos.y - position_.y));
 		}
 

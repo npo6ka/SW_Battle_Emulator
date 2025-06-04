@@ -20,7 +20,7 @@ namespace sw::game
 		bool addUnit(std::shared_ptr<IUnit> unit);
 		bool removeUnit(std::shared_ptr<IUnit> unit);
 		std::vector<std::shared_ptr<IUnit>> getUnitAt(Position pos) const;
-		std::vector<std::shared_ptr<IUnit>> getUnitsInRange(Position pos, int minRange, int maxRange) const;
+		std::vector<std::shared_ptr<IUnit>> getUnitsInRange(const IUnit &unit, int minRange, int maxRange) const;
 		const std::vector<std::pair<unsigned int, std::shared_ptr<IUnit>>>& getUnits() const;
 		void removeDeadUnits();
 		void printMap() const;

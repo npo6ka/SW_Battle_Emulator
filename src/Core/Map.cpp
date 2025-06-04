@@ -111,14 +111,14 @@ namespace sw::game
 		return units;
 	}
 
-	std::vector<std::shared_ptr<IUnit>> Map::getUnitsInRange(Position pos, int minRange, int maxRange) const
+	std::vector<std::shared_ptr<IUnit>> Map::getUnitsInRange(const IUnit &unit, int minRange, int maxRange) const
 	{
 		std::vector<std::shared_ptr<IUnit>> units;
-		for (const auto& [id, unit] : units_)
+		for (const auto& [id, opponent] : units_)
 		{
-			if (unit->getDistance(pos) >= minRange && unit->getDistance(pos) <= maxRange)
+			if (opponent->getDistance(unit) >= minRange && opponent->getDistance(unit) <= maxRange)
 			{
-				units.push_back(unit);
+				units.push_back(opponent);
 			}
 		}
 
