@@ -5,13 +5,13 @@
 namespace sw::game
 {
 	class Map;
-	class Unit;
+	class IUnit;
 
 	class Behavior
 	{
 	public:
 		virtual ~Behavior() = default;
-		virtual bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) = 0;
+		virtual bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) = 0;
 
 		bool isFinished() const
 		{

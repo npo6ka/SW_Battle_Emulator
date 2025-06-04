@@ -2,7 +2,7 @@
 
 #include "Core/Map.hpp"
 #include "Core/Unit/Behavior.hpp"
-#include "Core/Unit/Unit.hpp"
+#include "Core/Unit/IUnit.hpp"
 
 namespace sw::game
 {
@@ -34,14 +34,18 @@ namespace sw::game
 		behaviors_.insert(behaviors_.begin(), behavior);
 	}
 
-	void BehaviorController::execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map)
+	bool BehaviorController::execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map)
 	{
+		bool isCompleted = false;
 		auto behavior = behaviors_.begin();	 // выполняем поведения пока это поведение не вернет успех
-		while (behavior != behaviors_.end() && !(*behavior)->execute(unit, map))
+		while (behavior != behaviors_.end() && !isCompleted)
 		{
+			isCompleted = (*behavior)->execute(unit, map);
 			++behavior;
 		}
 		removeFinishedBehaviors();
+
+		return isCompleted;
 	}
 
 	void BehaviorController::removeFinishedBehaviors()

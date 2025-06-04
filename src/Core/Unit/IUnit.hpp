@@ -13,12 +13,12 @@ namespace sw::game
 	class Map;
 	class Behavior;
 
-	class Unit : public std::enable_shared_from_this<Unit>
+	class IUnit : public std::enable_shared_from_this<IUnit>
 	{
 	public:
-		Unit() = default;
-		Unit(unsigned int id, int hp, Position pos);
-		virtual ~Unit() = default;
+		IUnit() = default;
+		IUnit(unsigned int id, int hp, Position pos);
+		virtual ~IUnit() = default;
 
 		unsigned int getId() const
 		{
@@ -31,7 +31,7 @@ namespace sw::game
 		}
 
 		void setHp(int hp);
-		virtual void attack(std::shared_ptr<Unit> attacker, int damage);
+		virtual void attack(std::shared_ptr<IUnit> attacker, int damage);
 
 		const Position& getPosition() const
 		{
@@ -50,9 +50,14 @@ namespace sw::game
 			return stats_;
 		}
 
-		BehaviorController& getBehaviors()
+		BehaviorController& getMovementController()
 		{
-			return behaviorController_;
+			return movementController_;
+		}
+
+		BehaviorController& getAttackController()
+		{
+			return attackController_;
 		}
 
 		bool isAlive() const
@@ -78,11 +83,14 @@ namespace sw::game
 			return true;
 		}
 
+		virtual void marchUnit(int x, int y) = 0;
+
 	protected:
 		unsigned int id_;
 		int hp_;
 		Position position_;
-		BehaviorController behaviorController_;
+		BehaviorController movementController_;
+		BehaviorController attackController_;
 		UnitStats stats_;
 	};
 

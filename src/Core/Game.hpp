@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Map.hpp"
-#include "Core/Unit/Unit.hpp"
+#include "Core/Unit/IUnit.hpp"
 
 #include <memory>
 #include <vector>
@@ -15,8 +15,8 @@ namespace sw::game
 		Game(){};
 
 		void createMap(int width, int height);
-		void addUnits(std::vector<std::shared_ptr<Unit>> units);
-		void removeUnits(std::vector<std::shared_ptr<Unit>> units);
+		void addUnits(std::vector<std::shared_ptr<IUnit>> units);
+		void removeUnits(std::vector<std::shared_ptr<IUnit>> units);
 		void marchUnit(unsigned int unitId, int x, int y);
 		void simulate();
 

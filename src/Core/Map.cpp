@@ -1,7 +1,7 @@
 #include "Core/Map.hpp"
 
 #include "Core/Game.hpp"
-#include "Core/Unit/Unit.hpp"
+#include "Core/Unit/IUnit.hpp"
 
 #include <IO/Events/MapCreated.hpp>
 #include <IO/Events/UnitSpawned.hpp>
@@ -16,7 +16,7 @@ namespace sw::game
 			width_(width),
 			height_(height)
 	{
-		grid_.resize(height, std::vector<std::shared_ptr<Unit>>(width));
+		grid_.resize(height, std::vector<std::shared_ptr<IUnit>>(width));
 		eventLog.log(Game::getCurrentTurn(), io::MapCreated{width, height});
 	}
 
@@ -30,7 +30,7 @@ namespace sw::game
 		return isValidPosition(pos) && grid_[pos.y][pos.x] != nullptr;
 	}
 
-	bool Map::moveUnit(std::shared_ptr<Unit> unit, Position toPos)
+	bool Map::moveUnit(std::shared_ptr<IUnit> unit, Position toPos)
 	{
 		if (!isValidPosition(toPos) || (isCellOccupied(toPos) && unit->isTakesUpCell()))
 		{
@@ -54,7 +54,7 @@ namespace sw::game
 		return true;
 	}
 
-	bool Map::addUnit(std::shared_ptr<Unit> unit)
+	bool Map::addUnit(std::shared_ptr<IUnit> unit)
 	{
 		Position pos = unit->getPosition();
 
@@ -74,7 +74,7 @@ namespace sw::game
 		return true;
 	}
 
-	bool Map::removeUnit(std::shared_ptr<Unit> unit)
+	bool Map::removeUnit(std::shared_ptr<IUnit> unit)
 	{
 		Position pos = unit->getPosition();
 
@@ -92,9 +92,9 @@ namespace sw::game
 		return false;
 	}
 
-	std::vector<std::shared_ptr<Unit>> Map::getUnitAt(Position pos) const
+	std::vector<std::shared_ptr<IUnit>> Map::getUnitAt(Position pos) const
 	{
-		std::vector<std::shared_ptr<Unit>> units = {};
+		std::vector<std::shared_ptr<IUnit>> units = {};
 		if (!isValidPosition(pos))
 		{
 			return units;
@@ -111,9 +111,9 @@ namespace sw::game
 		return units;
 	}
 
-	std::vector<std::shared_ptr<Unit>> Map::getUnitsInRange(Position pos, int minRange, int maxRange) const
+	std::vector<std::shared_ptr<IUnit>> Map::getUnitsInRange(Position pos, int minRange, int maxRange) const
 	{
-		std::vector<std::shared_ptr<Unit>> units;
+		std::vector<std::shared_ptr<IUnit>> units;
 		for (const auto& [id, unit] : units_)
 		{
 			if (unit->getDistance(pos) >= minRange && unit->getDistance(pos) <= maxRange)
@@ -125,14 +125,14 @@ namespace sw::game
 		return units;
 	}
 
-	const std::vector<std::pair<unsigned int, std::shared_ptr<Unit>>>& Map::getUnits() const
+	const std::vector<std::pair<unsigned int, std::shared_ptr<IUnit>>>& Map::getUnits() const
 	{
 		return units_;
 	}
 
 	void Map::removeDeadUnits()
 	{
-		std::vector<std::shared_ptr<Unit>> deadUnits;
+		std::vector<std::shared_ptr<IUnit>> deadUnits;
 		for (const auto& [id, unit] : units_)
 		{
 			if (!unit->isAlive())

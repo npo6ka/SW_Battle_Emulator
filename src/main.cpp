@@ -1,6 +1,6 @@
 #include <Core/Game.hpp>
 #include <Core/Position.hpp>
-#include <Core/Unit/Unit.hpp>
+#include <Features/Units/Unit.hpp>
 #include <Features/Units/Hunter.hpp>
 #include <Features/Units/Swordsman.hpp>
 #include <IO/Commands/CreateMap.hpp>

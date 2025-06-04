@@ -6,8 +6,8 @@
 namespace sw::game
 {
 	class Behavior;
-	class Unit;
 	class Map;
+	class IUnit;
 
 	class BehaviorController
 	{
@@ -19,7 +19,7 @@ namespace sw::game
 		void addBehavior(std::shared_ptr<Behavior> behavior, int position);
 		void removeBehavior(int position);
 		void addToFrontBehavior(std::shared_ptr<Behavior> behavior);
-		void execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map);
+		bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map);
 		void removeFinishedBehaviors();
 		void clearBehaviors();
 		size_t getBehaviorCount() const;

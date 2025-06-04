@@ -1,7 +1,5 @@
 #include "Core/Game.hpp"
 
-#include "Features/Behaviors.hpp"
-
 #include <IO/Events/MarchStarted.hpp>
 #include <IO/System/EventLog.hpp>
 #include <algorithm>
@@ -14,7 +12,7 @@ namespace sw::game
 		map_ = std::make_shared<Map>(width, height);
 	}
 
-	void Game::addUnits(std::vector<std::shared_ptr<Unit>> units)
+	void Game::addUnits(std::vector<std::shared_ptr<IUnit>> units)
 	{
 		for (const auto& unit : units)
 		{
@@ -22,7 +20,7 @@ namespace sw::game
 		}
 	}
 
-	void Game::removeUnits(std::vector<std::shared_ptr<Unit>> units)
+	void Game::removeUnits(std::vector<std::shared_ptr<IUnit>> units)
 	{
 		for (const auto& unit : units)
 		{
@@ -38,11 +36,8 @@ namespace sw::game
 			[unitId](const auto& pair) { return pair.first == unitId; });
 		if (unitIt != map_->getUnits().end())
 		{
-			auto unit = unitIt->second;
-			auto& behaviors = unit->getBehaviors();
-			// вставляем предпоследним, чтобы атака была в приоритете
-			behaviors.addBehavior(
-				std::make_shared<MarchToTargetBehavior>(Position(x, y)), behaviors.getBehaviorCount() - 1);
+			std::shared_ptr<IUnit> unit = unitIt->second;
+			unit->marchUnit(x, y);
 			eventLog.log(currentTurn_, io::MarchStarted{unitId, unit->getPosition().x, unit->getPosition().y, x, y});
 		}
 	}

@@ -10,10 +10,13 @@ namespace sw::game
 			Unit(id, hp, pos)
 	{
 		stats_.set(properties::Strength{strength});
+		stats_.set(properties::Movement{properties::MovementType::All});
 
-		auto& behaviors = getBehaviors();
-		behaviors.addBehavior(std::make_shared<MeleeAttackBehavior>());
-		behaviors.addBehavior(std::make_shared<MoveToNearestUnitBehavior>());
+		auto& attackController = getAttackController();
+		attackController.addBehavior(std::make_shared<MeleeAttackBehavior>());
+
+		auto& movementController = getMovementController();
+		movementController.addBehavior(std::make_shared<MoveToNearestUnitBehavior>());
 	}
 
 }

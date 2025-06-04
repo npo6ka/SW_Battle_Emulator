@@ -2,7 +2,7 @@
 
 #include "Core/Map.hpp"
 #include "Core/Unit/Behavior.hpp"
-#include "Core/Unit/Unit.hpp"
+#include "Core/Unit/IUnit.hpp"
 #include "Features/Movement.hpp"
 #include "Features/Properties.hpp"
 
@@ -14,7 +14,7 @@ namespace sw::game
 	class MoveBehavior : public Behavior
 	{
 	public:
-		virtual bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override = 0;
+		virtual bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override = 0;
 
 		std::vector<Position> getPath(
 			Position start, Position target, std::shared_ptr<Map> map, properties::MovementType movementType)
@@ -70,7 +70,7 @@ namespace sw::game
 				target_(target)
 		{}
 
-		bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override
+		bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override
 		{
 			Position start = unit->getPosition();
 			if (start == target_)
@@ -97,11 +97,11 @@ namespace sw::game
 	class MoveToNearestUnitBehavior : public MoveBehavior
 	{
 	public:
-		bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override
+		bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override
 		{
 			Position pos = unit->getPosition();
 			auto units = map->getUnits();
-			std::shared_ptr<Unit> targetUnit;
+			std::shared_ptr<IUnit> targetUnit;
 			int distanceToTarget = INT_MAX;
 
 			for (const auto& [opponentId, opponent] : units)
@@ -133,9 +133,9 @@ namespace sw::game
 	class DamageBehavior : public Behavior
 	{
 	public:
-		virtual bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override = 0;
+		virtual bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override = 0;
 
-		bool dealDamage(std::shared_ptr<Unit> unit, std::vector<std::shared_ptr<Unit>> unitsInRange, int damage)
+		bool dealDamage(std::shared_ptr<IUnit> unit, std::vector<std::shared_ptr<IUnit>> unitsInRange, int damage)
 		{
 			if (!unitsInRange.empty())
 			{
@@ -161,7 +161,7 @@ namespace sw::game
 	class MeleeAttackBehavior : public DamageBehavior
 	{
 	public:
-		bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override
+		bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override
 		{
 			const Position& pos = unit->getPosition();
 			properties::Strength strength = unit->getStats().get<properties::Strength>();
@@ -174,7 +174,7 @@ namespace sw::game
 	class RangedAttackBehavior : public DamageBehavior
 	{
 	public:
-		bool execute(std::shared_ptr<Unit> unit, std::shared_ptr<Map> map) override
+		bool execute(std::shared_ptr<IUnit> unit, std::shared_ptr<Map> map) override
 		{
 			const Position& pos = unit->getPosition();
 			properties::Agility agility = unit->getStats().get<properties::Agility>();
